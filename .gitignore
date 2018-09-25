@@ -9,6 +9,7 @@ bin/**
 .vs/**
 *.VC.db
 *.VC.opendb
+*.vcxproj.user
 
 #
 # VS Code files.
