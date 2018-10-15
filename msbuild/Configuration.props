@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+    Driver-specific configuration.
+    -->
+  <PropertyGroup Condition="'$(ConfigurationType)' == 'Driver'">
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <IncludePath>$(ProjectDir);$(VC_IncludePath);$(IncludePath);$(KMDF_INC_PATH)$(KMDF_VER_PATH)</IncludePath>
+
+    <TargetVersion Condition="('$(Platform)' == 'Win32' or '$(Platform)' == 'x64')">Windows7</TargetVersion>
+    <TargetVersion Condition="('$(Platform)' == 'ARM' or '$(Platform)' == 'ARM64')">Windows10</TargetVersion>
+
+    <!--
+    <EnableInf2cat>false</EnableInf2cat>
+    <Inf2CatUseLocalTime>true</Inf2CatUseLocalTime>
+    -->
+  </PropertyGroup>
+
+  <!--
+    Base compiler and linker configuration.
+    -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+
+      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)%(RelativeDir)%(Filename)%(Extension).obj</ObjectFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <ExceptionHandling>false</ExceptionHandling>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+
+      <!-- Suppress some warning messages -->
+      <DisableSpecificWarnings Condition="'$(ConfigurationType)' == 'Driver'">4201;4748;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <!--                     4201;4603;4627;4986;4987;4996;%(DisableSpecificWarnings) -->
+
+      <!-- Add various preprocessor definitions for specific conditions -->
+      <PreprocessorDefinitions Condition="'$(Platform)' == 'Win32'">_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Subsystem)' == 'Console'">_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(ConfigurationType)' == 'StaticLibrary'">_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(ConfigurationType)' == 'DynamicLibrary'">_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>$(Subsystem)</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <!-- <GenerateDebugInformation>DebugFull</GenerateDebugInformation> -->
+
+      <!-- Ignore CRT for NtdllOnly projects -->
+      <IgnoreAllDefaultLibraries Condition="'$(NtdllOnly)' == 'true'">true</IgnoreAllDefaultLibraries>
+
+      <!-- Configure link dependencies -->
+      <AdditionalDependencies Condition="'$(NtdllOnly)' == 'true'">ntdll.lib</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(NtdllOnly)' != 'true'">ntdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+
+      <!-- Make entrypoint NtMain/NtDllMain for ntdll-only dependent applications/libraries -->
+      <EntryPointSymbol Condition="('$(NtdllOnly)' == 'true' and '$(ConfigurationType)' == 'Application')">NtMain</EntryPointSymbol>
+      <EntryPointSymbol Condition="('$(NtdllOnly)' == 'true' and '$(ConfigurationType)' == 'DynamicLibrary')">NtDllMain</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <PropertyGroup>
+    <LinkIncremental Condition="'$(ConfigurationType)' == 'Driver'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(ConfigurationType)' != 'Driver'">true</LinkIncremental>
+  </PropertyGroup>
+
+  <!--
+    Create configuration-specific properties.
+    -->
+  <Import Project="$(MSBuildThisFileDirectory)\Configuration\Debug.props" />
+  <Import Project="$(MSBuildThisFileDirectory)\Configuration\Release.props" />
+</Project>

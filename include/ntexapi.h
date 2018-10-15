@@ -1876,11 +1876,11 @@ typedef enum _EVENT_TRACE_INFORMATION_CLASS
     EventTraceHeapTracingInformation, // EVENT_TRACE_HEAP_TRACING_INFORMATION
     EventTraceHeapSummaryTracingInformation, // EVENT_TRACE_HEAP_TRACING_INFORMATION
     EventTracePoolTagFilterInformation, // EVENT_TRACE_TAG_FILTER_INFORMATION
-    EventTracePebsTracingInformation, // EVENT_TRACE_SYSTEM_EVENT_INFORMATION 
+    EventTracePebsTracingInformation, // EVENT_TRACE_SYSTEM_EVENT_INFORMATION
     EventTraceProfileConfigInformation, // EVENT_TRACE_PROFILE_COUNTER_INFORMATION
     EventTraceProfileSourceListInformation, // EVENT_TRACE_PROFILE_LIST_INFORMATION
-    EventTraceProfileEventListInformation, // EVENT_TRACE_SYSTEM_EVENT_INFORMATION 
-    EventTraceProfileCounterListInformation, // EVENT_TRACE_PROFILE_COUNTER_INFORMATION 
+    EventTraceProfileEventListInformation, // EVENT_TRACE_SYSTEM_EVENT_INFORMATION
+    EventTraceProfileCounterListInformation, // EVENT_TRACE_PROFILE_COUNTER_INFORMATION
     EventTraceStackCachingInformation, // EVENT_TRACE_STACK_CACHING_INFORMATION
     EventTraceObjectTypeFilterInformation, // EVENT_TRACE_TAG_FILTER_INFORMATION
     EventTraceSoftRestartInformation, // EVENT_TRACE_SOFT_RESTART_INFORMATION
@@ -2742,7 +2742,7 @@ typedef struct _SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION_EX
 } SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION_EX, *PSYSTEM_PROCESSOR_PERFORMANCE_INFORMATION_EX;
 
 // private
-typedef struct _SYSTEM_SECUREBOOT_POLICY_INFORMATION 
+typedef struct _SYSTEM_SECUREBOOT_POLICY_INFORMATION
 {
     GUID PolicyPublisher;
     ULONG PolicyVersion;
@@ -2856,7 +2856,7 @@ typedef struct _PROCESS_ENERGY_VALUES_EXTENSION
             ENERGY_STATE_DURATION PSMBackgroundDuration;
         };
     };
-    
+
     ULONG KeyboardInput;
     ULONG MouseInput;
 } PROCESS_ENERGY_VALUES_EXTENSION, *PPROCESS_ENERGY_VALUES_EXTENSION;
@@ -3638,9 +3638,9 @@ typedef struct _KUSER_SHARED_DATA
 
     USHORT UnparkedProcessorCount;
     ULONG EnclaveFeatureMask[4];
-    
+
     ULONG TelemetryCoverageRound;
-    
+
     USHORT UserModeGlobalLogger[16];
     ULONG ImageFileExecutionOptions;
 
@@ -3702,7 +3702,7 @@ C_ASSERT(FIELD_OFFSET(KUSER_SHARED_DATA, SystemCallPad) == 0x310);
 C_ASSERT(FIELD_OFFSET(KUSER_SHARED_DATA, TickCount) == 0x320);
 C_ASSERT(FIELD_OFFSET(KUSER_SHARED_DATA, TickCountQuad) == 0x320);
 C_ASSERT(FIELD_OFFSET(KUSER_SHARED_DATA, XState) == 0x3d8);
-C_ASSERT(sizeof(KUSER_SHARED_DATA) == 0x708);
+//C_ASSERT(sizeof(KUSER_SHARED_DATA) == 0x708);
 
 #define USER_SHARED_DATA ((KUSER_SHARED_DATA * const)0x7ffe0000)
 

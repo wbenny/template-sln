@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration">
+    <!--
+      Default value of BinDirLayout.
+      -->
+    <BinDirLayout Condition="'$(BinDirLayout)' == ''">BinPlatformConfiguration</BinDirLayout>
+
+    <!--
+      Default value of Subsystem.
+      -->
+    <Subsystem Condition="('$(Subsystem)' == '' and ('$(ConfigurationType)' == 'DynamicLibrary' or '$(ConfigurationType)' == 'StaticLibrary'))">Windows</Subsystem>
+    <Subsystem Condition="('$(Subsystem)' == '' and '$(ConfigurationType)' == 'Application')">Console</Subsystem>
+    <Subsystem Condition="('$(Subsystem)' == '' and '$(ConfigurationType)' == 'Driver')">Native</Subsystem>
+
+    <!--
+      Default value of NtdllOnly.
+      -->
+    <NtdllOnly Condition="'$(NtdllOnly)' == ''">false</NtdllOnly>
+  </PropertyGroup>
+
+  <!--
+    Include necessary props (order is important).
+    -->
+  <Import Project="$(MSBuildThisFileDirectory)\Platform.props" />
+  <Import Project="$(MSBuildThisFileDirectory)\Build.props" />
+  <Import Project="$(MSBuildThisFileDirectory)\Configuration.props" />
+</Project>
