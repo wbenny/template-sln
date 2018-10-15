@@ -23,6 +23,6 @@
     Include necessary props (order is important).
     -->
   <Import Project="$(MSBuildThisFileDirectory)\Platform.props" />
-  <Import Project="$(MSBuildThisFileDirectory)\Build.props" />
   <Import Project="$(MSBuildThisFileDirectory)\Configuration.props" />
+  <Import Project="$(MSBuildThisFileDirectory)\Build.props" />
 </Project>

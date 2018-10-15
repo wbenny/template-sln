@@ -6,8 +6,9 @@
     <IntDir>$(SolutionDir)bin\obj\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
 
-  <!-- sample-root/bin/x86/Debug/... -->
+  <!-- sample-root/bin/Debug/...x86.exe -->
   <PropertyGroup Condition="'$(BinDirLayout)' == 'BinConfiguration'">
+    <TargetName>$(ProjectName)$(PlatformShortName)</TargetName>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\obj\$(PlatformShortName)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
