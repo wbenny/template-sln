@@ -1,5 +1,5 @@
-#ifndef _NTDLL_NTDEF_H
-#define _NTDLL_NTDEF_H
+#ifndef _PHNT_NTDEF_H
+#define _PHNT_NTDEF_H
 
 #ifndef _NTDEF_
 #define _NTDEF_

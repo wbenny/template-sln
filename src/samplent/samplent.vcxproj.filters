@@ -13,7 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\ntdll">
+    <Filter Include="Header Files\include">
+      <UniqueIdentifier>{cc2045b1-eff5-473d-ba9e-e467fe6374f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\ntdll">
       <UniqueIdentifier>{a8a55810-0101-43a9-bf97-8b28f1d943e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -23,98 +26,101 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\ntdbg.h">
-      <Filter>Header Files\ntdll</Filter>
+    <ClInclude Include="..\..\include\ntdll\ntdbg.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntexapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntgdi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntioapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntkeapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntldr.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntlpcapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntmisc.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntmmapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntnls.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntobapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntpebteb.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntpfapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntpnpapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntpoapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntpsapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntregapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntrtl.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntsam.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntseapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntsmss.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\nttmapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\nttp.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntwow64.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntxcapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\ntzwapi.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\phnt.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\phnt_ntdef.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\phnt_windows.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\subprocesstag.h">
+      <Filter>Header Files\include\ntdll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\ntdll\winsta.h">
+      <Filter>Header Files\include\ntdll</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\ntdll.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntdll_ntdef.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntdll_windows.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntexapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntgdi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntioapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntkeapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntldr.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntlpcapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntmisc.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntmmapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntnls.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntobapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntpebteb.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntpfapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntpnpapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntpoapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntpsapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntregapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntrtl.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntsam.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntseapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntsmss.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\nttmapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\nttp.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntwow64.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntxcapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\ntzwapi.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\subprocesstag.h">
-      <Filter>Header Files\ntdll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\winsta.h">
-      <Filter>Header Files\ntdll</Filter>
+      <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

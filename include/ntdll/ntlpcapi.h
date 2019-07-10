@@ -486,7 +486,7 @@ typedef struct _ALPC_HANDLE_ATTR
 } ALPC_HANDLE_ATTR, *PALPC_HANDLE_ATTR;
 
 #define ALPC_SECFLG_CREATE_HANDLE 0x20000 // dbg
-
+#define ALPC_SECFLG_NOSECTIONHANDLE 0x40000
 // private
 typedef struct _ALPC_SECURITY_ATTR
 {
@@ -595,7 +595,7 @@ typedef struct _ALPC_MESSAGE_HANDLE_INFORMATION
 
 // begin_private
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 
 // System calls
 
@@ -759,7 +759,7 @@ NtAlpcConnectPort(
     _In_opt_ PLARGE_INTEGER Timeout
     );
 
-#if (NTDLL_VERSION >= NTDLL_WIN8)
+#if (PHNT_VERSION >= PHNT_WIN8)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -829,7 +829,7 @@ NtAlpcImpersonateClientOfPort(
     _In_ PVOID Flags
     );
 
-#if (NTDLL_VERSION >= NTDLL_THRESHOLD)
+#if (PHNT_VERSION >= PHNT_THRESHOLD)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -880,6 +880,10 @@ AlpcGetHeaderSize(
     _In_ ULONG Flags
     );
 
+#define ALPC_ATTRFLG_ALLOCATEDATTR 0x20000000
+#define ALPC_ATTRFLG_VALIDATTR 0x40000000
+#define ALPC_ATTRFLG_KEEPRUNNINGATTR 0x60000000
+
 NTSYSAPI
 NTSTATUS
 NTAPI
@@ -916,7 +920,7 @@ AlpcUnregisterCompletionList(
     _In_ HANDLE PortHandle
     );
 
-#if (NTDLL_VERSION >= NTDLL_WIN7)
+#if (PHNT_VERSION >= PHNT_WIN7)
 // rev
 NTSYSAPI
 NTSTATUS

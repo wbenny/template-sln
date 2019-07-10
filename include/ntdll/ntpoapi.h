@@ -13,7 +13,7 @@ typedef enum _POWER_STATE_TYPE
     DevicePowerState
 } POWER_STATE_TYPE, *PPOWER_STATE_TYPE;
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 // wdm
 typedef struct _SYSTEM_POWER_STATE_CONTEXT
 {
@@ -34,7 +34,7 @@ typedef struct _SYSTEM_POWER_STATE_CONTEXT
 } SYSTEM_POWER_STATE_CONTEXT, *PSYSTEM_POWER_STATE_CONTEXT;
 #endif
 
-#if (NTDLL_VERSION >= NTDLL_WIN7)
+#if (PHNT_VERSION >= PHNT_WIN7)
 /** \cond NEVER */ // disable doxygen warning
 // wdm
 typedef struct _COUNTED_REASON_CONTEXT
@@ -56,7 +56,7 @@ typedef struct _COUNTED_REASON_CONTEXT
 /** \endcond */
 #endif
 
-typedef enum
+typedef enum _POWER_STATE_HANDLER_TYPE
 {
     PowerStateSleeping1 = 0,
     PowerStateSleeping2 = 1,

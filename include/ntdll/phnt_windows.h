@@ -1,5 +1,5 @@
-#ifndef _NTDLL_WINDOWS_H
-#define _NTDLL_WINDOWS_H
+#ifndef _PHNT_WINDOWS_H
+#define _PHNT_WINDOWS_H
 
 // This header file provides access to Win32, plus NTSTATUS values and some access mask values.
 

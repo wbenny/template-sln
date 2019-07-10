@@ -264,7 +264,7 @@ NtCreateKey(
     _Out_opt_ PULONG Disposition
     );
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -289,7 +289,7 @@ NtOpenKey(
     _In_ POBJECT_ATTRIBUTES ObjectAttributes
     );
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -301,7 +301,7 @@ NtOpenKeyTransacted(
     );
 #endif
 
-#if (NTDLL_VERSION >= NTDLL_WIN7)
+#if (PHNT_VERSION >= PHNT_WIN7)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -313,7 +313,7 @@ NtOpenKeyEx(
     );
 #endif
 
-#if (NTDLL_VERSION >= NTDLL_WIN7)
+#if (PHNT_VERSION >= PHNT_WIN7)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -630,7 +630,7 @@ NtLockProductActivationKeys(
     _Out_opt_ ULONG *pSafeMode
     );
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 // private
 NTSYSCALLAPI
 NTSTATUS
@@ -640,7 +640,7 @@ NtFreezeRegistry(
     );
 #endif
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 // private
 NTSYSCALLAPI
 NTSTATUS

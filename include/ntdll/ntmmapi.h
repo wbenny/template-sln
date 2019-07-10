@@ -1,7 +1,7 @@
 #ifndef _NTMMAPI_H
 #define _NTMMAPI_H
 
-#if (NTDLL_MODE == NTDLL_MODE_KERNEL)
+#if (PHNT_MODE == PHNT_MODE_KERNEL)
 
 // Protection constants
 
@@ -24,7 +24,7 @@
 #define PAGE_ENCLAVE_UNVALIDATED    0x20000000
 
 // Region and section constants
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 #define MEM_COMMIT 0x1000
 #define MEM_RESERVE 0x2000
 #define MEM_DECOMMIT 0x4000
@@ -39,18 +39,18 @@
 #define MEM_PHYSICAL 0x400000
 #define MEM_ROTATE 0x800000
 #define MEM_DIFFERENT_IMAGE_BASE_OK 0x800000
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 #define MEM_RESET_UNDO 0x1000000
 #endif
 #define MEM_LARGE_PAGES 0x20000000
 #define MEM_4MB_PAGES 0x80000000
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 #define SEC_FILE 0x800000
 #endif
 #define SEC_IMAGE 0x1000000
 #define SEC_PROTECTED_IMAGE 0x2000000
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 #define SEC_RESERVE 0x4000000
 #define SEC_COMMIT 0x8000000
 #endif
@@ -62,7 +62,7 @@
 
 #endif
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 // private
 typedef enum _MEMORY_INFORMATION_CLASS
 {
@@ -135,6 +135,7 @@ typedef struct _MEMORY_REGION_INFORMATION
     };
     SIZE_T RegionSize;
     SIZE_T CommitSize;
+    ULONG_PTR PartitionId; // 19H1
 } MEMORY_REGION_INFORMATION, *PMEMORY_REGION_INFORMATION;
 
 // private 
@@ -164,8 +165,9 @@ typedef struct _MEMORY_WORKING_SET_EX_BLOCK
             ULONG_PTR Reserved : 3;
             ULONG_PTR SharedOriginal : 1;
             ULONG_PTR Bad : 1;
+            ULONG_PTR Win32GraphicsProtection : 4; // 19H1
 #ifdef _WIN64
-            ULONG_PTR ReservedUlong : 32;
+            ULONG_PTR ReservedUlong : 28;
 #endif
         };
         struct
@@ -258,7 +260,7 @@ typedef struct _MEMORY_FRAME_INFORMATION
 {
     ULONGLONG UseDescription : 4; // MMPFNUSE_*
     ULONGLONG ListDescription : 3; // MMPFNLIST_*
-    ULONGLONG Reserved0 : 1; // reserved for future expansion
+    ULONGLONG Cold : 1; // 19H1
     ULONGLONG Pinned : 1; // 1 - pinned, 0 - not pinned
     ULONGLONG DontUse : 48; // *_INFORMATION overlay
     ULONGLONG Priority : 3; // rev
@@ -405,7 +407,7 @@ typedef struct _SECTION_INTERNAL_IMAGE_INFORMATION
     };
 } SECTION_INTERNAL_IMAGE_INFORMATION, *PSECTION_INTERNAL_IMAGE_INFORMATION;
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 typedef enum _SECTION_INHERIT
 {
     ViewShare = 1,
@@ -427,7 +429,7 @@ typedef enum _SECTION_INHERIT
 
 // Virtual memory
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -499,13 +501,14 @@ NtQueryVirtualMemory(
 #endif
 
 // begin_private
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 typedef enum _VIRTUAL_MEMORY_INFORMATION_CLASS
 {
     VmPrefetchInformation, // ULONG
     VmPagePriorityInformation,
     VmCfgCallTargetInformation, // CFG_CALL_TARGET_LIST_INFORMATION // REDSTONE2
-    VmPageDirtyStateInformation // REDSTONE3
+    VmPageDirtyStateInformation, // REDSTONE3
+    VmImageHotPatchInformation // 19H1
 } VIRTUAL_MEMORY_INFORMATION_CLASS;
 
 typedef struct _MEMORY_RANGE_ENTRY
@@ -520,13 +523,15 @@ typedef struct _CFG_CALL_TARGET_LIST_INFORMATION
     ULONG Reserved;
     PULONG NumberOfEntriesProcessed;
     PCFG_CALL_TARGET_INFO CallTargetInfo;
+    PVOID Section; // since REDSTONE5
+    ULONGLONG FileOffset;
 } CFG_CALL_TARGET_LIST_INFORMATION, *PCFG_CALL_TARGET_LIST_INFORMATION;
 #endif
 // end_private
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
-#if (NTDLL_VERSION >= NTDLL_THRESHOLD)
+#if (PHNT_VERSION >= PHNT_THRESHOLD)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -566,7 +571,7 @@ NtUnlockVirtualMemory(
 
 // Sections
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -580,6 +585,23 @@ NtCreateSection(
     _In_ ULONG AllocationAttributes,
     _In_opt_ HANDLE FileHandle
     );
+
+#if (PHNT_VERSION >= PHNT_REDSTONE5)
+NTSYSCALLAPI
+NTSTATUS
+NTAPI
+NtCreateSectionEx(
+    _Out_ PHANDLE SectionHandle,
+    _In_ ACCESS_MASK DesiredAccess,
+    _In_opt_ POBJECT_ATTRIBUTES ObjectAttributes,
+    _In_opt_ PLARGE_INTEGER MaximumSize,
+    _In_ ULONG SectionPageProtection,
+    _In_ ULONG AllocationAttributes,
+    _In_opt_ HANDLE FileHandle,
+    _In_ PMEM_EXTENDED_PARAMETER ExtendedParameters,
+    _In_ ULONG ExtendedParameterCount
+    );
+#endif
 
 NTSYSCALLAPI
 NTSTATUS
@@ -614,7 +636,7 @@ NtUnmapViewOfSection(
     _In_opt_ PVOID BaseAddress
     );
 
-#if (NTDLL_VERSION >= NTDLL_WIN8)
+#if (PHNT_VERSION >= PHNT_WIN8)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -760,9 +782,9 @@ typedef struct _MEMORY_PARTITION_MEMORY_EVENTS_INFORMATION
     HANDLE MaximumCommitCondition; // \KernelObjects\MaximumCommitCondition
 } MEMORY_PARTITION_MEMORY_EVENTS_INFORMATION, *PMEMORY_PARTITION_MEMORY_EVENTS_INFORMATION;
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
-#if (NTDLL_VERSION >= NTDLL_THRESHOLD)
+#if (PHNT_VERSION >= PHNT_THRESHOLD)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -798,7 +820,7 @@ NtManagePartition(
 
 // User physical pages
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -840,9 +862,9 @@ NtFreeUserPhysicalPages(
 
 // Sessions
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -857,7 +879,7 @@ NtOpenSession(
 
 // Misc.
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -907,6 +929,71 @@ NtFlushWriteBuffer(
     VOID
     );
 
+#endif
+
+// Enclave support
+
+NTSYSAPI
+NTSTATUS
+NTAPI
+NtCreateEnclave(
+    _In_ HANDLE ProcessHandle,
+    _Inout_ PVOID* BaseAddress,
+    _In_ ULONG_PTR ZeroBits,
+    _In_ SIZE_T Size,
+    _In_ SIZE_T InitialCommitment,
+    _In_ ULONG EnclaveType,
+    _In_reads_bytes_(EnclaveInformationLength) PVOID EnclaveInformation,
+    _In_ ULONG EnclaveInformationLength,
+    _Out_opt_ PULONG EnclaveError
+    );
+
+NTSYSAPI
+NTSTATUS
+NTAPI
+NtLoadEnclaveData(
+    _In_ HANDLE ProcessHandle,
+    _In_ PVOID BaseAddress,
+    _In_reads_bytes_(BufferSize) PVOID Buffer,
+    _In_ SIZE_T BufferSize,
+    _In_ ULONG Protect,
+    _In_reads_bytes_(PageInformationLength) PVOID PageInformation,
+    _In_ ULONG PageInformationLength,
+    _Out_opt_ PSIZE_T NumberOfBytesWritten,
+    _Out_opt_ PULONG EnclaveError
+    );
+
+NTSYSAPI
+NTSTATUS
+NTAPI
+NtInitializeEnclave(
+    _In_ HANDLE ProcessHandle,
+    _In_ PVOID BaseAddress,
+    _In_reads_bytes_(EnclaveInformationLength) PVOID EnclaveInformation,
+    _In_ ULONG EnclaveInformationLength,
+    _Out_opt_ PULONG EnclaveError
+    );
+
+// rev
+NTSYSAPI
+NTSTATUS
+NTAPI
+NtTerminateEnclave(
+    _In_ PVOID BaseAddress,
+    _In_ BOOLEAN WaitForThread
+    );
+
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
+// rev
+NTSYSAPI
+NTSTATUS
+NTAPI
+NtCallEnclave(
+    _In_ PENCLAVE_ROUTINE Routine,
+    _In_ PVOID Parameter,
+    _In_ BOOLEAN WaitForThread,
+    _Out_opt_ PVOID *ReturnValue
+    );
 #endif
 
 #endif

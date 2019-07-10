@@ -21,7 +21,7 @@
 #ifndef _NTLDR_H
 #define _NTLDR_H
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 // DLLs
 
@@ -180,7 +180,8 @@ typedef struct _LDR_DATA_TABLE_ENTRY
             ULONG CorImage : 1;
             ULONG DontRelocate : 1;
             ULONG CorILOnly : 1;
-            ULONG ReservedFlags5 : 3;
+            ULONG ChpeImage : 1;
+            ULONG ReservedFlags5 : 2;
             ULONG Redirected : 1;
             ULONG ReservedFlags6 : 2;
             ULONG CompatDatabaseProcessed : 1;
@@ -254,7 +255,7 @@ LdrGetDllHandleEx(
     _Out_opt_ PVOID *DllHandle
     );
 
-#if (NTDLL_VERSION >= NTDLL_WIN7)
+#if (PHNT_VERSION >= PHNT_WIN7)
 // rev
 NTSYSAPI
 NTSTATUS
@@ -265,7 +266,7 @@ LdrGetDllHandleByMapping(
     );
 #endif
 
-#if (NTDLL_VERSION >= NTDLL_WIN7)
+#if (PHNT_VERSION >= PHNT_WIN7)
 // rev
 NTSYSAPI
 NTSTATUS
@@ -277,7 +278,7 @@ LdrGetDllHandleByName(
     );
 #endif
 
-#if (NTDLL_VERSION >= NTDLL_WIN8)
+#if (PHNT_VERSION >= PHNT_WIN8)
 // rev
 NTSYSAPI
 NTSTATUS
@@ -327,7 +328,7 @@ LdrGetProcedureAddress(
 // rev
 #define LDR_GET_PROCEDURE_ADDRESS_DONT_RECORD_FORWARDER 0x00000001
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 // private
 NTSYSAPI
 NTSTATUS
@@ -350,7 +351,7 @@ LdrGetKnownDllSectionHandle(
     _Out_ PHANDLE Section
     );
 
-#if (NTDLL_VERSION >= NTDLL_THRESHOLD)
+#if (PHNT_VERSION >= PHNT_THRESHOLD)
 // rev
 NTSYSAPI
 NTSTATUS
@@ -475,7 +476,7 @@ typedef struct _LDR_VERIFY_IMAGE_INFO
     USHORT ImageCharacteristics;
 } LDR_VERIFY_IMAGE_INFO, *PLDR_VERIFY_IMAGE_INFO;
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 // private
 NTSYSAPI
 NTSTATUS
@@ -486,7 +487,7 @@ LdrVerifyImageMatchesChecksumEx(
     );
 #endif
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 // private
 NTSYSAPI
 NTSTATUS
@@ -533,7 +534,7 @@ typedef VOID (NTAPI *PLDR_DLL_NOTIFICATION_FUNCTION)(
     _In_opt_ PVOID Context
     );
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 
 NTSYSAPI
 NTSTATUS
@@ -555,6 +556,14 @@ LdrUnregisterDllNotification(
 #endif
 
 // end_msdn
+
+// rev
+NTSYSAPI
+PUNICODE_STRING
+NTAPI
+LdrStandardizeSystemPath(
+    _In_ PUNICODE_STRING SystemPath
+    );
 
 // private
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -593,7 +602,7 @@ typedef struct _PS_SYSTEM_DLL_INIT_BLOCK
     PS_MITIGATION_AUDIT_OPTIONS_MAP MitigationAuditOptionsMap; // REDSTONE3
 } PS_SYSTEM_DLL_INIT_BLOCK, *PPS_SYSTEM_DLL_INIT_BLOCK;
 
-#if (NTDLL_VERSION >= NTDLL_THRESHOLD)
+#if (PHNT_VERSION >= PHNT_THRESHOLD)
 // rev
 NTSYSAPI
 PPS_SYSTEM_DLL_INIT_BLOCK
@@ -605,7 +614,7 @@ LdrSystemDllInitBlock(
 
 // Load as data table
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 
 // private
 NTSYSAPI
@@ -731,7 +740,7 @@ LdrFindEntryForAddress(
     _Out_ PLDR_DATA_TABLE_ENTRY *Entry
     );
 
-#endif // (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#endif // (PHNT_MODE != PHNT_MODE_KERNEL)
 
 // Module information
 
@@ -765,7 +774,7 @@ typedef struct _RTL_PROCESS_MODULE_INFORMATION_EX
     PVOID DefaultBase;
 } RTL_PROCESS_MODULE_INFORMATION_EX, *PRTL_PROCESS_MODULE_INFORMATION_EX;
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSAPI
 NTSTATUS
@@ -936,6 +945,16 @@ LdrControlFlowGuardEnforced(
     VOID
     );
 
-#endif // (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_VERSION >= PHNT_19H1)
+// rev
+NTSYSAPI
+BOOLEAN
+NTAPI
+LdrIsModuleSxsRedirected(
+    _In_ PVOID DllHandle
+    );
+#endif
+
+#endif // (PHNT_MODE != PHNT_MODE_KERNEL)
 
 #endif

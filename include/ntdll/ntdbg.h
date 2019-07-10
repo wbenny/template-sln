@@ -373,14 +373,14 @@ typedef VOID (NTAPI *PENABLECALLBACK)(
 
 typedef ULONGLONG REGHANDLE, *PREGHANDLE;
 
-// NTSYSAPI
-// NTSTATUS
-// NTAPI
-// EtwEventRegister(
-//     _In_ LPCGUID ProviderId,
-//     _In_opt_ PENABLECALLBACK EnableCallback,
-//     _In_opt_ PVOID CallbackContext,
-//     _Out_ PREGHANDLE RegHandle
-//     );
+NTSYSAPI
+NTSTATUS
+NTAPI
+EtwEventRegister(
+    _In_ LPCGUID ProviderId,
+    _In_opt_ PENABLECALLBACK EnableCallback,
+    _In_opt_ PVOID CallbackContext,
+    _Out_ PREGHANDLE RegHandle
+    );
 
 #endif

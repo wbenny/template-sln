@@ -1,104 +1,43 @@
-#ifndef _NTDLL_H
-#define _NTDLL_H
+#pragma once
 
-// This header file provides access to NT APIs.
+//
+// Remap definitions.
+//
 
-// Definitions are annotated to indicate their source. If a definition is not annotated, it has been
-// retrieved from an official Microsoft source (NT headers, DDK headers, winnt.h).
-
-// * "winbase" indicates that a definition has been reconstructed from a Win32-ized NT definition in
-//   winbase.h.
-// * "rev" indicates that a definition has been reverse-engineered.
-// * "dbg" indicates that a definition has been obtained from a debug message or assertion in a
-//   checked build of the kernel or file.
-
-// Reliability:
-// 1. No annotation.
-// 2. dbg.
-// 3. symbols, private. Types may be incorrect.
-// 4. winbase. Names and types may be incorrect.
-// 5. rev.
-
-// Mode
-#define NTDLL_MODE_KERNEL 0
-#define NTDLL_MODE_USER 1
-
-// Version
-#define NTDLL_WIN2K 50
-#define NTDLL_WINXP 51
-#define NTDLL_WS03 52
-#define NTDLL_VISTA 60
-#define NTDLL_WIN7 61
-#define NTDLL_WIN8 62
-#define NTDLL_WINBLUE 63
-#define NTDLL_THRESHOLD 100
-#define NTDLL_THRESHOLD2 101
-#define NTDLL_REDSTONE 102
-#define NTDLL_REDSTONE2 103
-#define NTDLL_REDSTONE3 104
-#define NTDLL_REDSTONE4 105
-
-#ifndef NTDLL_MODE
-#define NTDLL_MODE NTDLL_MODE_USER
+#ifdef NTDLL_NO_INLINE_INIT_STRING
+#define PHNT_NO_INLINE_INIT_STRING
 #endif
 
-#ifndef NTDLL_VERSION
-#define NTDLL_VERSION NTDLL_WIN7
-#endif
+//
+// Hack, because prototype in PH's headers and evntprov.h
+// don't match.
+//
 
-// Options
+#define EtwEventRegister __EtwEventRegisterIgnored
 
-//#define NTDLL_NO_INLINE_INIT_STRING
+#include "ntdll/phnt_windows.h"
+#include "ntdll/phnt.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#undef  EtwEventRegister
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
-#include <ntdll_ntdef.h>
-#include <ntnls.h>
-#include <ntkeapi.h>
-#endif
+//
+// Include support for ETW logging.
+// Note that following functions are mocked, because they're
+// located in advapi32.dll.  Fortunatelly, advapi32.dll simply
+// redirects calls to these functions to the ntdll.dll.
+//
 
-#include <ntldr.h>
-#include <ntexapi.h>
+#define EventActivityIdControl  EtwEventActivityIdControl
+#define EventEnabled            EtwEventEnabled
+#define EventProviderEnabled    EtwEventProviderEnabled
+#define EventRegister           EtwEventRegister
+#define EventSetInformation     EtwEventSetInformation
+#define EventUnregister         EtwEventUnregister
+#define EventWrite              EtwEventWrite
+#define EventWriteEndScenario   EtwEventWriteEndScenario
+#define EventWriteEx            EtwEventWriteEx
+#define EventWriteStartScenario EtwEventWriteStartScenario
+#define EventWriteString        EtwEventWriteString
+#define EventWriteTransfer      EtwEventWriteTransfer
 
-#include <ntmmapi.h>
-#include <ntobapi.h>
-#include <ntpsapi.h>
-
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
-#include <cfg.h>
-#include <ntdbg.h>
-#include <ntioapi.h>
-#include <ntlpcapi.h>
-#include <ntpfapi.h>
-#include <ntpnpapi.h>
-#include <ntpoapi.h>
-#include <ntregapi.h>
-#include <ntrtl.h>
-#endif
-
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
-
-#include <ntseapi.h>
-#include <nttmapi.h>
-#include <nttp.h>
-#include <ntxcapi.h>
-
-#include <ntwow64.h>
-
-#include <ntlsa.h>
-#include <ntsam.h>
-
-#include <ntmisc.h>
-
-#include <ntzwapi.h>
-
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
+#include <evntprov.h>

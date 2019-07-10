@@ -1,12 +1,12 @@
 #ifndef _NTOBAPI_H
 #define _NTOBAPI_H
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 #define OBJECT_TYPE_CREATE 0x0001
 #define OBJECT_TYPE_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0x1)
 #endif
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 #define DIRECTORY_QUERY 0x0001
 #define DIRECTORY_TRAVERSE 0x0002
 #define DIRECTORY_CREATE_OBJECT 0x0004
@@ -14,7 +14,7 @@
 #define DIRECTORY_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0xf)
 #endif
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 #define SYMBOLIC_LINK_QUERY 0x0001
 #define SYMBOLIC_LINK_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | 0x1)
 #endif
@@ -25,7 +25,7 @@
 #endif
 #define OBJ_AUDIT_OBJECT_CLOSE 0x00000004
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 typedef enum _OBJECT_INFORMATION_CLASS
 {
     ObjectBasicInformation, // OBJECT_BASIC_INFORMATION
@@ -38,10 +38,12 @@ typedef enum _OBJECT_INFORMATION_CLASS
     MaxObjectInfoClass
 } OBJECT_INFORMATION_CLASS;
 #else
+#define ObjectBasicInformation 0
 #define ObjectNameInformation 1
 #define ObjectTypesInformation 3
 #define ObjectHandleFlagInformation 4
 #define ObjectSessionInformation 5
+#define ObjectSessionObjectInformation 6
 #endif
 
 typedef struct _OBJECT_BASIC_INFORMATION
@@ -59,7 +61,7 @@ typedef struct _OBJECT_BASIC_INFORMATION
     LARGE_INTEGER CreationTime;
 } OBJECT_BASIC_INFORMATION, *POBJECT_BASIC_INFORMATION;
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 typedef struct _OBJECT_NAME_INFORMATION
 {
     UNICODE_STRING Name;
@@ -106,7 +108,7 @@ typedef struct _OBJECT_HANDLE_FLAG_INFORMATION
 
 // Objects, handles
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -190,7 +192,7 @@ NtWaitForMultipleObjects(
     _In_opt_ PLARGE_INTEGER Timeout
     );
 
-#if (NTDLL_VERSION >= NTDLL_WS03)
+#if (PHNT_VERSION >= PHNT_WS03)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -230,7 +232,7 @@ NtClose(
     _In_ HANDLE Handle
     );
 
-#if (NTDLL_VERSION >= NTDLL_THRESHOLD)
+#if (PHNT_VERSION >= PHNT_THRESHOLD)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -244,7 +246,7 @@ NtCompareObjects(
 
 // Directory objects
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -255,7 +257,7 @@ NtCreateDirectoryObject(
     _In_ POBJECT_ATTRIBUTES ObjectAttributes
     );
 
-#if (NTDLL_VERSION >= NTDLL_WIN8)
+#if (PHNT_VERSION >= PHNT_WIN8)
 NTSYSCALLAPI
 NTSTATUS
 NTAPI
@@ -300,9 +302,9 @@ NtQueryDirectoryObject(
 
 // Private namespaces
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
-#if (NTDLL_VERSION >= NTDLL_VISTA)
+#if (PHNT_VERSION >= PHNT_VISTA)
 
 NTSYSCALLAPI
 NTSTATUS
@@ -337,7 +339,7 @@ NtDeletePrivateNamespace(
 
 // Symbolic links
 
-#if (NTDLL_MODE != NTDLL_MODE_KERNEL)
+#if (PHNT_MODE != PHNT_MODE_KERNEL)
 
 NTSYSCALLAPI
 NTSTATUS
